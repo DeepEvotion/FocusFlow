@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Присоединиться к {{ 'каналу' if chat.chat_type == 'channel' else 'группе' }} - FocusFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, #0ea5e9 100%);
+        }
+        [data-theme="dark"] {
+            --bg-main: #050510;
+            --bg-card: rgba(15, 15, 35, 0.9);
+            --text-primary: #f0f0ff;
+            --text-secondary: #8888aa;
+            --border-color: rgba(99, 102, 241, 0.2);
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .join-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .chat-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+        .chat-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .chat-type {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .chat-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .chat-members {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: scale(1.02); }
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            width: 100%;
+        }
+        .logo {
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="join-card">
+        <div class="logo">FocusFlow</div>
+        
+        <div class="chat-avatar">
+            {% if chat.avatar_url %}
+                <img src="{{ chat.avatar_url }}" alt="">
+            {% else %}
+                {{ chat.name[0].upper() if chat.name else 'Г' }}
+            {% endif %}
+        </div>
+        
+        <div class="chat-name">{{ chat.name }}</div>
+        <div class="chat-type">{{ 'Канал' if chat.chat_type == 'channel' else 'Группа' }}</div>
+        
+        {% if chat.description %}
+        <div class="chat-description">{{ chat.description }}</div>
+        {% endif %}
+        
+        <div class="chat-members">{{ chat.members|length }} участников</div>
+        
+        <a href="/login?next=/join/{{ invite_link }}" class="btn btn-primary">
+            Войти и присоединиться
+        </a>
+        <a href="/register?next=/join/{{ invite_link }}" class="btn btn-outline">
+            Зарегистрироваться
+        </a>
+    </div>
+</body>
+</html>

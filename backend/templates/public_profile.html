@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_user.name or profile_user.username }} - FocusFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #0ea5e9;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        [data-theme="dark"] {
+            --bg-main: #050510;
+            --bg-card: rgba(15, 15, 35, 0.8);
+            --bg-input: rgba(10, 10, 30, 0.6);
+            --text-primary: #f0f0ff;
+            --text-secondary: #8888aa;
+            --border-color: rgba(99, 102, 241, 0.2);
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+            filter: blur(60px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .stars-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(2px);
+        }
+        .star {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: 0;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.3);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: var(--opacity); transform: scale(1); }
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px;
+            padding-bottom: 120px;
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-btn:hover { background: rgba(99, 102, 241, 0.1); }
+        .header-title { font-size: 1.3rem; font-weight: 600; }
+        
+        .profile-section {
+            text-align: center;
+            padding: 32px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .profile-username {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .profile-status {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .profile-status.online {
+            color: #22c55e;
+        }
+        .profile-bio {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .playlist-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 14px 16px;
+            font-weight: 600;
+            background: rgba(99, 102, 241, 0.05);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .playlist-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .playlist-info { flex: 1; }
+        .playlist-name { font-weight: 600; font-size: 1.1rem; }
+        .playlist-meta { color: var(--text-secondary); font-size: 0.9rem; }
+        .play-all-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .play-all-btn:hover { transform: scale(1.1); }
+        
+        .tracks-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .track-item:hover { background: rgba(99, 102, 241, 0.05); }
+        .track-item.playing { background: rgba(99, 102, 241, 0.1); }
+        .track-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--bg-input);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .track-item.playing .track-number {
+            background: var(--gradient);
+            color: white;
+        }
+        .track-info { flex: 1; min-width: 0; }
+        .track-title {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .track-artist {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .track-duration {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .actions-section {
+            margin-top: 16px;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .btn:hover { transform: scale(1.02); }
+        .btn-primary { background: var(--gradient); color: white; }
+        
+        /* Плеер */
+        .player-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .player-info { flex: 1; min-width: 0; }
+        .player-track-name {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-artist {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .player-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-btn:hover { background: rgba(99, 102, 241, 0.2); }
+        .player-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .player-btn-main {
+            width: 52px;
+            height: 52px;
+            background: var(--gradient);
+            border: none;
+            color: white;
+        }
+        .player-btn-main svg { width: 24px; height: 24px; }
+        .player-progress {
+            flex: 1;
+            max-width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .player-time {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 90px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars-bg" id="starsBg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="history.back()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            </button>
+            <span class="header-title">Профиль</span>
+        </div>
+        
+        <!-- Профиль -->
+        <div class="profile-section">
+            <div class="avatar" id="avatar">
+                {% if profile_user.avatar_url %}
+                <img src="{{ profile_user.avatar_url }}" alt="">
+                {% else %}
+                {{ (profile_user.name or profile_user.username)[0]|upper }}
+                {% endif %}
+            </div>
+            <h1 class="profile-name" id="profileName">{{ profile_user.name or profile_user.username }}</h1>
+            <p class="profile-username" id="profileUsername">@{{ profile_user.username }}</p>
+            <p class="profile-status" id="profileStatus"></p>
+            <p class="profile-bio" id="profileBio">{{ profile_user.bio or '' }}</p>
+        </div>
+        
+        <!-- Закреплённый плейлист -->
+        <div class="playlist-section" id="playlistSection" style="display: none;">
+            <div class="section-header">
+                <span>🎵 Закреплённый плейлист</span>
+            </div>
+            <div class="playlist-card" id="playlistCard">
+                <div class="playlist-info">
+                    <div class="playlist-name" id="playlistName"></div>
+                    <div class="playlist-meta" id="playlistMeta"></div>
+                </div>
+                <button class="play-all-btn" onclick="playAll()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+            </div>
+            <div class="tracks-list" id="tracksList"></div>
+        </div>
+        
+        <!-- Действия -->
+        <div class="actions-section">
+            <button class="btn btn-primary" onclick="startChat()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                Написать сообщение
+            </button>
+        </div>
+    </div>
+    
+    <!-- Плеер -->
+    <div class="player-panel" id="playerPanel" style="display: none;">
+        <div class="player-info">
+            <div class="player-track-name" id="playerTrackName">-</div>
+            <div class="player-artist" id="playerArtist">-</div>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" onclick="prevTrack()">
+                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="player-btn player-btn-main" onclick="togglePlay()">
+                <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="player-btn" onclick="nextTrack()">
+                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+        </div>
+        <div class="player-progress" onclick="seekTrack(event)">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="player-time" id="playerTime">0:00 / 0:00</div>
+    </div>
+    
+    <audio id="audioPlayer"></audio>
+    
+    <script>
+        const userId = parseInt('{{ profile_user.id }}');
+        let playlist = null;
+        let tracks = [];
+        let currentTrackIndex = -1;
+        let isPlaying = false;
+        const audio = document.getElementById('audioPlayer');
+        
+        function createStars() {
+            const container = document.getElementById('starsBg');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--opacity', Math.random() * 0.5 + 0.3);
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        async function loadProfile() {
+            const res = await fetch(`/api/users/${userId}/profile`);
+            const user = await res.json();
+            
+            document.getElementById('profileName').textContent = user.name || user.username;
+            document.getElementById('profileUsername').textContent = '@' + user.username;
+            document.getElementById('profileStatus').textContent = user.last_seen_text;
+            document.getElementById('profileStatus').className = 'profile-status' + (user.is_online ? ' online' : '');
+            document.getElementById('profileBio').textContent = user.bio || '';
+            
+            const avatar = document.getElementById('avatar');
+            if (user.avatar_url) {
+                avatar.innerHTML = `<img src="${user.avatar_url}" alt="">`;
+            } else {
+                avatar.textContent = (user.name || user.username)[0].toUpperCase();
+            }
+            
+            document.title = `${user.name || user.username} - FocusFlow`;
+        }
+        
+        async function loadPinnedPlaylist() {
+            try {
+                console.log('Loading pinned playlist for user:', userId);
+                const res = await fetch(`/api/users/${userId}/pinned-playlist`);
+                console.log('Response status:', res.status);
+                
+                if (!res.ok) {
+                    console.log('Response not ok');
+                    return;
+                }
+                
+                const data = await res.json();
+                console.log('Playlist data:', data);
+                
+                if (!data.playlist) {
+                    console.log('No playlist found');
+                    return;
+                }
+                
+                playlist = data.playlist;
+                tracks = playlist.tracks;
+                
+                document.getElementById('playlistSection').style.display = 'block';
+                document.getElementById('playlistName').textContent = playlist.name;
+                document.getElementById('playlistMeta').textContent = `${playlist.tracks_count} треков`;
+                
+                const tracksList = document.getElementById('tracksList');
+                tracksList.innerHTML = tracks.map((t, i) => `
+                    <div class="track-item" data-index="${i}" onclick="playTrack(${i})">
+                        <div class="track-number">${i + 1}</div>
+                        <div class="track-info">
+                            <div class="track-title">${t.title}</div>
+                            <div class="track-artist">${t.artist}</div>
+                        </div>
+                        <div class="track-duration">${formatTime(t.duration)}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading playlist:', e);
+            }
+        }
+        
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+        
+        function playTrack(index) {
+            if (index < 0 || index >= tracks.length) return;
+            
+            currentTrackIndex = index;
+            const track = tracks[index];
+            
+            audio.src = track.url;
+            audio.play();
+            isPlaying = true;
+            
+            document.getElementById('playerPanel').style.display = 'flex';
+            document.getElementById('playerTrackName').textContent = track.title;
+            document.getElementById('playerArtist').textContent = track.artist;
+            updatePlayIcon();
+            
+            document.querySelectorAll('.track-item').forEach((el, i) => {
+                el.classList.toggle('playing', i === index);
+            });
+        }
+        
+        function playAll() {
+            if (tracks.length > 0) playTrack(0);
+        }
+        
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+            updatePlayIcon();
+        }
+        
+        function updatePlayIcon() {
+            const icon = document.getElementById('playIcon');
+            icon.innerHTML = isPlaying 
+                ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+                : '<path d="M8 5v14l11-7z"/>';
+        }
+        
+        function prevTrack() {
+            if (currentTrackIndex > 0) playTrack(currentTrackIndex - 1);
+        }
+        
+        function nextTrack() {
+            if (currentTrackIndex < tracks.length - 1) playTrack(currentTrackIndex + 1);
+        }
+        
+        function seekTrack(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+        
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100 || 0;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('playerTime').textContent = 
+                `${formatTime(audio.currentTime)} / ${formatTime(audio.duration || 0)}`;
+        });
+        
+        audio.addEventListener('ended', () => {
+            nextTrack();
+        });
+        
+        async function startChat() {
+            const res = await fetch('/api/chats', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = '/dashboard#chats';
+            }
+        }
+        
+        createStars();
+        loadProfile();
+        loadPinnedPlaylist();
+    </script>
+</body>
+</html>
