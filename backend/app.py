@@ -51,6 +51,11 @@ app.config.from_object(Config)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max
 
+# Настройки для OAuth сессий
+app.config['SESSION_COOKIE_NAME'] = 'focusflow_session'
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False  # True только для HTTPS
+
 # Создаём папку для загрузок
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -71,11 +76,8 @@ if app.config['GOOGLE_CLIENT_ID']:
         name='google',
         client_id=app.config['GOOGLE_CLIENT_ID'],
         client_secret=app.config['GOOGLE_CLIENT_SECRET'],
-        access_token_url='https://accounts.google.com/o/oauth2/token',
-        authorize_url='https://accounts.google.com/o/oauth2/auth',
-        api_base_url='https://www.googleapis.com/oauth2/v1/',
-        client_kwargs={'scope': 'openid email profile'},
-        jwks_uri='https://www.googleapis.com/oauth2/v3/certs',
+        server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+        client_kwargs={'scope': 'openid email profile'}
     )
 
 @login_manager.user_loader
@@ -213,40 +215,52 @@ def get_current_user():
 def google_login():
     if not app.config['GOOGLE_CLIENT_ID']:
         return jsonify({'error': 'Google OAuth не настроен'}), 400
-    redirect_uri = url_for('google_callback', _external=True)
+    redirect_uri = app.config['GOOGLE_REDIRECT_URI']
     return google.authorize_redirect(redirect_uri)
 
 @app.route('/auth/google/callback')
 def google_callback():
-    token = google.authorize_access_token()
-    user_info = google.get('userinfo').json()
-    
-    user = User.query.filter_by(google_id=user_info['id']).first()
-    
-    if not user:
-        user = User.query.filter_by(email=user_info['email']).first()
-        if user:
-            user.google_id = user_info['id']
+    try:
+        token = google.authorize_access_token()
+        resp = google.get('https://www.googleapis.com/oauth2/v2/userinfo')
+        user_info = resp.json()
+        
+        user = User.query.filter_by(google_id=user_info['id']).first()
+        
+        if not user:
+            user = User.query.filter_by(email=user_info['email']).first()
+            if user:
+                user.google_id = user_info['id']
+                # Обновляем аватарку при первом входе через Google
+                if user_info.get('picture'):
+                    user.avatar_url = user_info['picture']
+            else:
+                username = user_info['email'].split('@')[0]
+                base_username = username
+                counter = 1
+                while User.query.filter_by(username=username).first():
+                    username = f"{base_username}{counter}"
+                    counter += 1
+                
+                user = User(
+                    email=user_info['email'],
+                    username=username,
+                    name=user_info.get('name', username),
+                    google_id=user_info['id'],
+                    avatar_url=user_info.get('picture', '')
+                )
+                db.session.add(user)
         else:
-            username = user_info['email'].split('@')[0]
-            base_username = username
-            counter = 1
-            while User.query.filter_by(username=username).first():
-                username = f"{base_username}{counter}"
-                counter += 1
-            
-            user = User(
-                email=user_info['email'],
-                username=username,
-                name=user_info.get('name', username),
-                google_id=user_info['id'],
-                avatar_url=user_info.get('picture', '')
-            )
-            db.session.add(user)
-    
-    db.session.commit()
-    login_user(user)
-    return redirect(url_for('dashboard'))
+            # Обновляем аватарку при каждом входе (на случай если пользователь изменил фото в Google)
+            if user_info.get('picture'):
+                user.avatar_url = user_info['picture']
+        
+        db.session.commit()
+        login_user(user)
+        return redirect(url_for('dashboard'))
+    except Exception as e:
+        print(f"Google OAuth error: {e}")
+        return redirect(url_for('login_page') + '?error=oauth_failed')
 
 
 # ==================== YANDEX DISK ====================
@@ -357,93 +371,119 @@ def yandex_disconnect():
 @login_required
 def yandex_upload():
     """Загрузить файл на Яндекс.Диск"""
-    token = YandexDiskToken.query.filter_by(user_id=current_user.id).first()
-    if not token:
-        return jsonify({'error': 'Яндекс.Диск не подключен'}), 401
-    
-    if 'file' not in request.files:
-        return jsonify({'error': 'Файл не найден'}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'Файл не выбран'}), 400
-    
-    # Определяем тип файла по расширению
-    ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
-    
-    music_exts = {'mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac', 'wma'}
-    image_exts = {'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'}
-    doc_exts = {'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'}
-    video_exts = {'mp4', 'avi', 'mkv', 'mov', 'wmv', 'webm'}
-    archive_exts = {'zip', 'rar', '7z', 'tar', 'gz'}
-    
-    if ext in music_exts:
-        file_type = 'music'
-    elif ext in image_exts:
-        file_type = 'image'
-    elif ext in doc_exts:
-        file_type = 'document'
-    elif ext in video_exts:
-        file_type = 'video'
-    elif ext in archive_exts:
-        file_type = 'archive'
-    else:
-        file_type = 'other'
-    
-    # Генерируем уникальное имя
-    filename = secure_filename(file.filename)
-    unique_name = f"{uuid.uuid4().hex}_{filename}"
-    cloud_path = f"app:/FocusFlow/{file_type}/{unique_name}"
-    
-    # Сохраняем временно для извлечения метаданных
-    temp_dir = tempfile.gettempdir()
-    temp_path = os.path.join(temp_dir, unique_name)
-    file.save(temp_path)
-    
-    # Извлекаем метаданные для музыки
-    title, artist, duration = None, None, 0
-    if file_type == 'music':
-        title, artist, duration = extract_audio_metadata(temp_path)
-    
-    # Загружаем на Яндекс.Диск
-    yadisk = YandexDiskAPI(token.access_token)
-    
-    if not yadisk.upload_file(temp_path, cloud_path):
-        os.remove(temp_path)
-        return jsonify({'error': 'Ошибка загрузки на Яндекс.Диск'}), 500
-    
-    # Удаляем временный файл
-    os.remove(temp_path)
-    
-    # Получаем размер файла
-    file_info = yadisk.get_resource_info(cloud_path)
-    file_size = file_info.get('size', 0) if file_info else 0
-    
-    # Сохраняем информацию в БД
-    cloud_file = CloudFile(
-        user_id=current_user.id,
-        filename=filename,
-        cloud_path=cloud_path,
-        file_type=file_type,
-        size=file_size,
-        title=title or filename.rsplit('.', 1)[0],
-        artist=artist or '',
-        duration=duration
-    )
-    db.session.add(cloud_file)
-    db.session.commit()
-    
-    return jsonify({
-        'success': True,
-        'file': {
-            'id': cloud_file.id,
-            'filename': cloud_file.filename,
-            'title': cloud_file.title,
-            'artist': cloud_file.artist,
-            'duration': cloud_file.duration,
-            'size': cloud_file.size
-        }
-    })
+    try:
+        token = YandexDiskToken.query.filter_by(user_id=current_user.id).first()
+        if not token:
+            return jsonify({'error': 'Яндекс.Диск не подключен'}), 401
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'Файл не найден'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'Файл не выбран'}), 400
+        
+        # Определяем тип файла по расширению
+        ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
+        
+        music_exts = {'mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac', 'wma'}
+        image_exts = {'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'}
+        doc_exts = {'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'}
+        video_exts = {'mp4', 'avi', 'mkv', 'mov', 'wmv', 'webm'}
+        archive_exts = {'zip', 'rar', '7z', 'tar', 'gz'}
+        
+        if ext in music_exts:
+            file_type = 'music'
+        elif ext in image_exts:
+            file_type = 'image'
+        elif ext in doc_exts:
+            file_type = 'document'
+        elif ext in video_exts:
+            file_type = 'video'
+        elif ext in archive_exts:
+            file_type = 'archive'
+        else:
+            file_type = 'other'
+        
+        # Генерируем уникальное имя
+        filename = secure_filename(file.filename)
+        unique_name = f"{uuid.uuid4().hex}_{filename}"
+        cloud_path = f"app:/FocusFlow/{file_type}/{unique_name}"
+        
+        # Сохраняем временно для извлечения метаданных
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(temp_dir, unique_name)
+        
+        print(f"[YandexUpload] Saving temp file: {temp_path}")
+        file.save(temp_path)
+        
+        # Извлекаем метаданные для музыки
+        title, artist, duration = None, None, 0
+        if file_type == 'music':
+            try:
+                title, artist, duration = extract_audio_metadata(temp_path)
+            except Exception as e:
+                print(f"[YandexUpload] Metadata extraction error: {e}")
+        
+        # Загружаем на Яндекс.Диск
+        yadisk = YandexDiskAPI(token.access_token)
+        
+        # Убедимся, что папка для этого типа файлов существует
+        folder_path = f"app:/FocusFlow/{file_type}"
+        print(f"[YandexUpload] Ensuring folder exists: {folder_path}")
+        yadisk.create_folder(folder_path)
+        
+        print(f"[YandexUpload] Uploading to: {cloud_path}")
+        upload_result = yadisk.upload_file(temp_path, cloud_path)
+        
+        if not upload_result:
+            print(f"[YandexUpload] Upload failed")
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            return jsonify({'error': 'Ошибка загрузки на Яндекс.Диск'}), 500
+        
+        print(f"[YandexUpload] Upload successful")
+        
+        # Удаляем временный файл
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        
+        # Получаем размер файла
+        file_info = yadisk.get_resource_info(cloud_path)
+        file_size = file_info.get('size', 0) if file_info else 0
+        
+        # Сохраняем информацию в БД
+        cloud_file = CloudFile(
+            user_id=current_user.id,
+            filename=filename,
+            cloud_path=cloud_path,
+            file_type=file_type,
+            size=file_size,
+            title=title or filename.rsplit('.', 1)[0],
+            artist=artist or '',
+            duration=duration
+        )
+        db.session.add(cloud_file)
+        db.session.commit()
+        
+        print(f"[YandexUpload] File saved to DB with ID: {cloud_file.id}")
+        
+        return jsonify({
+            'success': True,
+            'file': {
+                'id': cloud_file.id,
+                'filename': cloud_file.filename,
+                'title': cloud_file.title,
+                'artist': cloud_file.artist,
+                'duration': cloud_file.duration,
+                'size': cloud_file.size
+            }
+        })
+    except Exception as e:
+        print(f"[YandexUpload] Error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Ошибка загрузки: {str(e)}'}), 500
 
 
 @app.route('/api/yandex/files')
@@ -525,6 +565,60 @@ def yandex_download(file_id):
             'Content-Type': response.headers.get('Content-Type', 'application/octet-stream')
         }
     )
+
+
+@app.route('/api/yandex/play/<int:file_id>')
+@login_required
+def yandex_play(file_id):
+    """Потоковое воспроизведение файла с Яндекс.Диска с поддержкой Range-запросов"""
+    import requests
+    from flask import Response, make_response
+    
+    cloud_file = CloudFile.query.filter_by(id=file_id, user_id=current_user.id).first()
+    if not cloud_file:
+        return jsonify({'error': 'Файл не найден'}), 404
+    
+    token = YandexDiskToken.query.filter_by(user_id=current_user.id).first()
+    if not token:
+        return jsonify({'error': 'Яндекс.Диск не подключен'}), 401
+    
+    yadisk = YandexDiskAPI(token.access_token)
+    download_url = yadisk.get_download_url(cloud_file.cloud_path)
+    
+    if not download_url:
+        return jsonify({'error': 'Не удалось получить ссылку'}), 500
+    
+    # Получаем Range заголовок от клиента
+    range_header = request.headers.get('Range', None)
+    
+    # Подготавливаем заголовки для запроса к Яндекс.Диску
+    headers = {}
+    if range_header:
+        headers['Range'] = range_header
+    
+    # Запрашиваем файл с Яндекс.Диска
+    response = requests.get(download_url, headers=headers, stream=True)
+    
+    # Определяем MIME-тип
+    content_type = response.headers.get('Content-Type', 'audio/mpeg')
+    
+    # Создаём ответ
+    def generate():
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                yield chunk
+    
+    flask_response = Response(generate(), status=response.status_code)
+    flask_response.headers['Content-Type'] = content_type
+    flask_response.headers['Accept-Ranges'] = 'bytes'
+    
+    # Копируем важные заголовки из ответа Яндекс.Диска
+    if 'Content-Length' in response.headers:
+        flask_response.headers['Content-Length'] = response.headers['Content-Length']
+    if 'Content-Range' in response.headers:
+        flask_response.headers['Content-Range'] = response.headers['Content-Range']
+    
+    return flask_response
 
 
 @app.route('/api/yandex/delete/<int:file_id>', methods=['DELETE'])

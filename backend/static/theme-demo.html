@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Демо изумрудной темы - FocusFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/emerald-theme.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .demo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            text-align: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-primary:hover {
+            color: #ffffff;
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary-light);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+        
+        .color-box {
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+        
+        .color-primary {
+            background: #10b981;
+            color: #000000;
+        }
+        
+        .color-secondary {
+            background: #14b8a6;
+            color: #000000;
+        }
+        
+        .color-accent {
+            background: #06b6d4;
+            color: #000000;
+        }
+        
+        .color-bg {
+            background: #000000;
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+        
+        .demo-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">Изумрудная тема FocusFlow</h1>
+        
+        <div class="demo-section">
+            <h2 class="section-title">Кнопки с анимацией</h2>
+            <p class="demo-text">
+                <strong>Наведите курсор на кнопки</strong>, чтобы увидеть анимацию изменения цвета текста:
+            </p>
+            <ul style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.8;">
+                <li>🎨 Обычное состояние: <strong style="color: #000000; background: #10b981; padding: 2px 8px; border-radius: 4px;">чёрный текст</strong> на изумрудном фоне</li>
+                <li>✨ При наведении: <strong style="color: #ffffff; background: #10b981; padding: 2px 8px; border-radius: 4px;">белый текст</strong> на изумрудном фоне</li>
+                <li>⚡ Плавная анимация 0.3 секунды</li>
+                <li>💫 Увеличенная тень для эффекта глубины</li>
+            </ul>
+            <div class="button-group">
+                <button class="btn btn-primary">Начать бесплатно</button>
+                <button class="btn btn-primary">Войти</button>
+                <button class="btn btn-outline">Узнать больше</button>
+                <button class="btn btn-outline">Регистрация</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="section-title">Цветовая палитра</h2>
+            <div class="color-palette">
+                <div class="color-box color-primary">
+                    Изумрудный<br>#10b981
+                </div>
+                <div class="color-box color-secondary">
+                    Бирюзовый<br>#14b8a6
+                </div>
+                <div class="color-box color-accent">
+                    Голубой<br>#06b6d4
+                </div>
+                <div class="color-box color-bg">
+                    Чёрный<br>#000000
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="section-title">Градиентный текст</h2>
+            <p class="gradient-text">Сфокусируйся на Главном</p>
+            <p class="demo-text">Текст с градиентом от изумрудного к бирюзовому</p>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="section-title">Описание темы</h2>
+            <p class="demo-text">
+                Тёмная тема в чёрно-изумрудных тонах создаёт атмосферу концентрации и спокойствия. 
+                Изумрудный цвет символизирует рост, гармонию и баланс, что идеально подходит для 
+                приложения продуктивности.
+            </p>
+            <p class="demo-text">
+                Все кнопки имеют плавную анимацию изменения цвета текста при наведении - 
+                от чёрного к белому для основных кнопок, создавая контрастный эффект на фоне 
+                изумрудного градиента.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -106,32 +106,61 @@ class YandexDiskAPI:
         """Убедиться что папка приложения существует"""
         # Создаём основную папку
         self.create_folder(self.APP_FOLDER)
-        # Создаём подпапки
-        self.create_folder(f"{self.APP_FOLDER}/music")
-        self.create_folder(f"{self.APP_FOLDER}/avatars")
+        # Создаём подпапки для разных типов файлов
+        folders = ['music', 'image', 'document', 'video', 'archive', 'other']
+        for folder in folders:
+            self.create_folder(f"{self.APP_FOLDER}/{folder}")
         return True
     
     def get_upload_url(self, path, overwrite=False):
         """Получить URL для загрузки файла"""
-        response = requests.get(
-            f"{self.BASE_URL}/resources/upload",
-            headers=self.headers,
-            params={'path': path, 'overwrite': str(overwrite).lower()}
-        )
-        if response.status_code == 200:
-            return response.json().get('href')
-        return None
+        try:
+            print(f"[YandexDisk API] Requesting upload URL for path: {path}")
+            response = requests.get(
+                f"{self.BASE_URL}/resources/upload",
+                headers=self.headers,
+                params={'path': path, 'overwrite': str(overwrite).lower()}
+            )
+            print(f"[YandexDisk API] get_upload_url status: {response.status_code}")
+            
+            if response.status_code == 200:
+                href = response.json().get('href')
+                print(f"[YandexDisk API] Upload URL obtained successfully")
+                return href
+            else:
+                print(f"[YandexDisk API] get_upload_url error: {response.text}")
+            return None
+        except Exception as e:
+            print(f"[YandexDisk API] get_upload_url exception: {e}")
+            return None
     
     def upload_file(self, local_path, cloud_path, overwrite=False):
         """Загрузить файл на диск"""
-        upload_url = self.get_upload_url(cloud_path, overwrite)
-        if not upload_url:
+        try:
+            print(f"[YandexDisk API] Getting upload URL for: {cloud_path}")
+            upload_url = self.get_upload_url(cloud_path, overwrite)
+            
+            if not upload_url:
+                print(f"[YandexDisk API] Failed to get upload URL")
+                return False
+            
+            print(f"[YandexDisk API] Upload URL obtained: {upload_url[:50]}...")
+            
+            with open(local_path, 'rb') as f:
+                response = requests.put(upload_url, data=f)
+            
+            print(f"[YandexDisk API] Upload response status: {response.status_code}")
+            
+            if response.status_code not in [201, 202]:
+                print(f"[YandexDisk API] Upload failed: {response.text}")
+                return False
+            
+            return True
+        except Exception as e:
+            print(f"[YandexDisk API] Upload exception: {e}")
+            import traceback
+            traceback.print_exc()
             return False
-        
-        with open(local_path, 'rb') as f:
-            response = requests.put(upload_url, files={'file': f})
-        
-        return response.status_code in [201, 202]
     
     def upload_file_from_bytes(self, file_bytes, cloud_path, overwrite=False):
         """Загрузить файл из байтов"""

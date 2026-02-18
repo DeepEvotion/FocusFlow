@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - FocusFlow</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/emerald-theme.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -14,36 +15,37 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(16, 185, 129, 0.1);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.4);
+            background: rgba(16, 185, 129, 0.4);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.6);
+            background: rgba(16, 185, 129, 0.6);
         }
         /* Firefox */
         * {
             scrollbar-width: thin;
-            scrollbar-color: rgba(99, 102, 241, 0.4) rgba(99, 102, 241, 0.1);
+            scrollbar-color: rgba(16, 185, 129, 0.4) rgba(16, 185, 129, 0.1);
         }
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --secondary: #0ea5e9;
-            --accent: #8b5cf6;
+            --primary: #10b981;
+            --primary-light: #34d399;
+            --primary-dark: #059669;
+            --secondary: #14b8a6;
+            --accent: #06b6d4;
             --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
         [data-theme="dark"] {
-            --bg-main: #050510;
-            --bg-card: rgba(15, 15, 35, 0.8);
-            --bg-sidebar: rgba(10, 10, 25, 0.95);
-            --bg-input: rgba(10, 10, 30, 0.6);
-            --text-primary: #f0f0ff;
-            --text-secondary: #8888aa;
-            --border-color: rgba(99, 102, 241, 0.2);
+            --bg-main: #000000;
+            --bg-card: rgba(10, 20, 15, 0.8);
+            --bg-sidebar: rgba(5, 15, 10, 0.95);
+            --bg-input: rgba(5, 15, 10, 0.6);
+            --text-primary: #e0f2e9;
+            --text-secondary: #6b8f7a;
+            --border-color: rgba(16, 185, 129, 0.2);
         }
         [data-theme="light"] {
             --bg-main: #f5f7ff;
@@ -96,14 +98,14 @@
         .nebula-1 {
             width: 600px;
             height: 600px;
-            background: #6366f1;
+            background: #10b981;
             top: -10%;
             left: -10%;
         }
         .nebula-2 {
             width: 500px;
             height: 500px;
-            background: #8b5cf6;
+            background: #14b8a6;
             bottom: 10%;
             right: -5%;
             animation-delay: -10s;
@@ -111,7 +113,7 @@
         .nebula-3 {
             width: 400px;
             height: 400px;
-            background: #0ea5e9;
+            background: #06b6d4;
             top: 40%;
             left: 25%;
             animation-delay: -5s;
@@ -119,7 +121,7 @@
         .nebula-4 {
             width: 350px;
             height: 350px;
-            background: #6366f1;
+            background: #10b981;
             bottom: 30%;
             left: 60%;
             animation-delay: -15s;
@@ -143,7 +145,7 @@
         }
         .star {
             position: absolute;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(16, 185, 129, 0.9);
             border-radius: 50%;
             animation: twinkle var(--duration) ease-in-out infinite;
             opacity: 0;
@@ -223,7 +225,7 @@
             color: var(--text-primary);
         }
         .nav-item.active {
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(16, 185, 129, 0.15);
             color: var(--primary-light);
         }
         .nav-icon { font-size: 1.2rem; }
@@ -353,9 +355,10 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            color: #ffffff;
         }
-        .user-name { font-weight: 600; }
-        .user-username { font-size: 0.85rem; color: var(--text-secondary); }
+        .user-name { font-weight: 600; color: #ffffff; }
+        .user-username { font-size: 0.85rem; color: #ffffff; }
         /* Основной контент */
         .main-content {
             flex: 1;
@@ -379,15 +382,28 @@
             font-weight: 600;
             cursor: pointer;
             border: none;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
             font-family: inherit;
         }
         .btn:hover { transform: scale(1.02); }
-        .btn-primary { background: var(--gradient); color: white; }
+        .btn-primary { 
+            background: var(--gradient); 
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-primary:hover {
+            color: #ffffff;
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+        }
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-primary);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary-light);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-light);
         }
         /* Карточки */
         .cards-grid {
@@ -452,7 +468,7 @@
             font-weight: 600;
         }
         .status-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-        .status-in_progress { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
+        .status-in_progress { background: rgba(16, 185, 129, 0.2); color: #34d399; }
         .status-completed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
         .task-meta {
             display: flex;
@@ -1525,16 +1541,16 @@
             bottom: 0;
             left: 260px;
             right: 0;
-            background: rgba(15, 15, 35, 0.75);
+            background: rgba(5, 15, 10, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            border-top: 1px solid rgba(16, 185, 129, 0.3);
             padding: 16px 32px;
             display: flex;
             align-items: center;
             gap: 24px;
             z-index: 100;
-            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 -4px 30px rgba(16, 185, 129, 0.15);
         }
         .player-panel::before {
             content: '';
@@ -1543,7 +1559,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
         }
         .player-info { flex: 1; min-width: 0; }
         .player-track-name {
@@ -1566,8 +1582,8 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: rgba(99, 102, 241, 0.1);
-            border: 2px solid rgba(99, 102, 241, 0.3);
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
@@ -1576,7 +1592,7 @@
             color: var(--primary-light);
         }
         .player-btn:hover { 
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(16, 185, 129, 0.2);
             border-color: var(--primary);
             transform: scale(1.08);
         }
@@ -1593,12 +1609,12 @@
             height: 64px;
             background: var(--gradient);
             border: none;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
             color: white;
         }
         .player-btn-main:hover { 
             transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
         }
         .player-btn-main svg {
             width: 26px;
@@ -1653,11 +1669,11 @@
         }
         .player-btn-small:hover {
             color: var(--text-primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(16, 185, 129, 0.1);
         }
         .player-btn-small.active {
             color: var(--primary-light);
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(16, 185, 129, 0.2);
         }
         
         /* Громкость */
@@ -2038,10 +2054,10 @@
         
         /* Иконки типов файлов */
         .cloud-file-icon.music { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
-        .cloud-file-icon.image { background: linear-gradient(135deg, #10b981, #0ea5e9); }
+        .cloud-file-icon.image { background: linear-gradient(135deg, #10b981, #14b8a6); }
         .cloud-file-icon.document { background: linear-gradient(135deg, #f59e0b, #ef4444); }
         .cloud-file-icon.video { background: linear-gradient(135deg, #ef4444, #ec4899); }
-        .cloud-file-icon.archive { background: linear-gradient(135deg, #6366f1, #0ea5e9); }
+        .cloud-file-icon.archive { background: linear-gradient(135deg, #10b981, #14b8a6); }
         .cloud-file-icon.other { background: linear-gradient(135deg, #6b7280, #9ca3af); }
         
         /* Превью изображения */
@@ -2544,7 +2560,7 @@
         }
         .message-outgoing {
             align-self: flex-end;
-            background: linear-gradient(135deg, #5b5fc7 0%, #6366f1 100%);
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
             color: white;
             border-radius: 18px 18px 4px 18px;
         }
@@ -2569,7 +2585,7 @@
             opacity: 0.7;
         }
         .message-status.read {
-            color: #60a5fa;
+            color: #34d399;
         }
         .message-sender {
             font-size: 0.8rem;
@@ -4202,6 +4218,7 @@
             justify-content: center;
             font-size: 1.5rem;
             font-weight: 700;
+            color: var(--text-primary);
             background: var(--bg-input);
             border: 2px solid var(--border-color);
             transition: all 0.3s;
@@ -4233,6 +4250,8 @@
             background: var(--bg-input);
             border: 2px solid var(--border-color);
             font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -4644,8 +4663,8 @@
                                 <circle id="progressCircle" cx="60" cy="60" r="50" fill="none" stroke="url(#progressGradient)" stroke-width="12" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314"/>
                                 <defs>
                                     <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#6366f1"/>
-                                        <stop offset="100%" stop-color="#0ea5e9"/>
+                                        <stop offset="0%" stop-color="#10b981"/>
+                                        <stop offset="100%" stop-color="#14b8a6"/>
                                     </linearGradient>
                                 </defs>
                             </svg>
@@ -6113,17 +6132,36 @@
         
         async function playCloudFile(fileId) {
             try {
-                const res = await fetch(`/api/yandex/stream/${fileId}`);
-                const data = await res.json();
+                // Получаем информацию о файле
+                const filesRes = await fetch('/api/yandex/files?type=all');
+                const files = await filesRes.json();
+                const file = files.find(f => f.id === fileId);
                 
-                if (data.url) {
-                    audioPlayer.src = data.url;
-                    audioPlayer.play();
-                    showToast('Воспроизведение...', 'success');
-                } else {
-                    showToast(data.error || 'Ошибка воспроизведения', 'error');
+                if (!file) {
+                    showToast('Файл не найден', 'error');
+                    return;
                 }
+                
+                // Показываем панель плеера с информацией о файле
+                document.getElementById('playerPanel').style.display = 'flex';
+                document.getElementById('playerTrackName').textContent = file.title || file.filename;
+                document.getElementById('playerArtist').textContent = file.artist || 'Неизвестный исполнитель';
+                
+                // Используем прямой эндпоинт для потокового воспроизведения
+                const streamUrl = `/api/yandex/play/${fileId}`;
+                
+                audioPlayer.src = streamUrl;
+                audioPlayer.load();
+                audioPlayer.play().catch(err => {
+                    console.error('Playback error:', err);
+                    showToast('Ошибка воспроизведения', 'error');
+                });
+                
+                isPlaying = true;
+                updatePlayPauseIcon();
+                showToast('Воспроизведение...', 'success');
             } catch (e) {
+                console.error('Error playing cloud file:', e);
                 showToast('Ошибка воспроизведения', 'error');
             }
         }
@@ -6142,23 +6180,20 @@
         
         async function playCloudTrack(cloudFileId) {
             try {
-                const res = await fetch(`/api/yandex/stream/${cloudFileId}`);
-                const data = await res.json();
+                // Используем прямой эндпоинт для потокового воспроизведения
+                const streamUrl = `/api/yandex/play/${cloudFileId}`;
                 
-                if (data.url) {
-                    audioPlayer.src = data.url;
-                    audioPlayer.load();
-                    audioPlayer.play().catch(err => {
-                        console.error('Playback error:', err);
-                        showToast('Ошибка воспроизведения', 'error');
-                    });
-                    isPlaying = true;
-                    updatePlayPauseIcon();
-                } else {
-                    showToast(data.error || 'Ошибка получения ссылки', 'error');
-                }
+                audioPlayer.src = streamUrl;
+                audioPlayer.load();
+                audioPlayer.play().catch(err => {
+                    console.error('Playback error:', err);
+                    showToast('Ошибка воспроизведения', 'error');
+                });
+                isPlaying = true;
+                updatePlayPauseIcon();
             } catch (e) {
-                showToast('Ошибка воспроизведения облачного файла', 'error');
+                console.error('Error playing cloud track:', e);
+                showToast('Ошибка воспроизведения', 'error');
             }
         }
         
@@ -6338,34 +6373,69 @@
                 formData.append('file', file);
                 
                 try {
-                    // Простая загрузка без прогресса (для упрощения)
-                    barEl.style.width = '50%';
-                    percentEl.textContent = '50%';
-                    
-                    const res = await fetch('/api/yandex/upload', {
-                        method: 'POST',
-                        body: formData
+                    // Используем XMLHttpRequest для отслеживания прогресса
+                    const result = await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        
+                        // Отслеживаем прогресс загрузки
+                        xhr.upload.addEventListener('progress', (e) => {
+                            if (e.lengthComputable) {
+                                const percent = Math.round((e.loaded / e.total) * 100);
+                                barEl.style.width = percent + '%';
+                                percentEl.textContent = percent + '%';
+                            }
+                        });
+                        
+                        // Обработка завершения
+                        xhr.addEventListener('load', () => {
+                            if (xhr.status === 200) {
+                                try {
+                                    resolve(JSON.parse(xhr.responseText));
+                                } catch (e) {
+                                    reject(new Error('Ошибка парсинга ответа'));
+                                }
+                            } else {
+                                reject(new Error(`Ошибка ${xhr.status}`));
+                            }
+                        });
+                        
+                        // Обработка ошибок
+                        xhr.addEventListener('error', () => {
+                            reject(new Error('Ошибка сети'));
+                        });
+                        
+                        xhr.addEventListener('abort', () => {
+                            reject(new Error('Загрузка отменена'));
+                        });
+                        
+                        // Отправляем запрос
+                        xhr.open('POST', '/api/yandex/upload');
+                        xhr.send(formData);
                     });
                     
-                    const data = await res.json();
-                    
-                    if (data.success) {
+                    if (result.success) {
                         barEl.style.width = '100%';
                         percentEl.textContent = '100%';
                         
                         uploadedDiv.innerHTML += `
-                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(34, 197, 94, 0.1); border-radius: 8px; margin-bottom: 8px;">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="#22c55e"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                                <span>${data.file.title || file.name}</span>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-bottom: 8px;">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="#10b981"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                <span>${result.file.title || file.name}</span>
                             </div>
                         `;
-                        showToast(`Файл "${data.file.title}" загружен`, 'success');
+                        showToast(`Файл "${result.file.title}" загружен`, 'success');
                     } else {
-                        showToast(data.error || 'Ошибка загрузки', 'error');
+                        showToast(result.error || 'Ошибка загрузки', 'error');
                     }
                 } catch (e) {
-                    showToast('Ошибка загрузки файла', 'error');
+                    console.error('Upload error:', e);
+                    showToast(`Ошибка загрузки файла: ${e.message}`, 'error');
+                    barEl.style.width = '0%';
+                    percentEl.textContent = '0%';
                 }
+                
+                // Небольшая задержка между файлами
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
             
             progressDiv.style.display = 'none';
@@ -6547,6 +6617,18 @@
             } else {
                 const prevIndex = currentTrackIndex <= 0 ? currentTracks.length - 1 : currentTrackIndex - 1;
                 playTrack(prevIndex);
+            }
+        }
+        
+        function skipForward() {
+            if (audioPlayer.src) {
+                audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 5, audioPlayer.duration);
+            }
+        }
+        
+        function skipBackward() {
+            if (audioPlayer.src) {
+                audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 5, 0);
             }
         }
         
@@ -7135,11 +7217,17 @@
                 if (data.success) {
                     showToast(`Добавлено ${data.added} треков`, 'success');
                     closeModal('trackModal');
-                    loadPlaylistTracks(playlistId);
+                    // Обновляем список треков, если открыт этот плейлист
+                    if (currentPlaylist && currentPlaylist.id == playlistId) {
+                        await loadTracks(playlistId);
+                    }
+                    // Обновляем список плейлистов для обновления счетчика треков
+                    await loadPlaylists();
                 } else {
                     showToast(data.error || 'Ошибка добавления', 'error');
                 }
             } catch (e) {
+                console.error('Error adding tracks from cloud:', e);
                 showToast('Ошибка добавления треков', 'error');
             }
         }
@@ -7794,7 +7882,7 @@
                             <path d="M-12,0 L-8,-12 L0,-5 L8,-12 L12,0 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
                             <circle cx="-8" cy="-10" r="2" fill="#ef4444"/>
                             <circle cx="0" cy="-5" r="2" fill="#22c55e"/>
-                            <circle cx="8" cy="-10" r="2" fill="#3b82f6"/>
+                            <circle cx="8" cy="-10" r="2" fill="#10b981"/>
                             <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
                         </g>
                     `;
@@ -8817,28 +8905,28 @@
         // Кастомные SVG стикеры FocusFlow
         const customStickers = {
             'ff-fire': `<svg viewBox="0 0 64 64"><defs><linearGradient id="fireGrad" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" style="stop-color:#f97316"/><stop offset="50%" style="stop-color:#ef4444"/><stop offset="100%" style="stop-color:#fbbf24"/></linearGradient></defs><path d="M32 4c0 0-16 14-16 32 0 12 8 20 16 24 8-4 16-12 16-24C48 18 32 4 32 4z" fill="url(#fireGrad)"/><ellipse cx="32" cy="44" rx="8" ry="12" fill="#fef3c7"/></svg>`,
-            'ff-rocket': `<svg viewBox="0 0 64 64"><defs><linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M32 4L24 24v20l8 12 8-12V24L32 4z" fill="url(#rocketGrad)"/><path d="M24 32l-8 16 8-4v-12z" fill="#f97316"/><path d="M40 32l8 16-8-4v-12z" fill="#f97316"/><circle cx="32" cy="24" r="4" fill="#fff"/><path d="M28 44l4 16 4-16" fill="#fbbf24"/></svg>`,
+            'ff-rocket': `<svg viewBox="0 0 64 64"><defs><linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><path d="M32 4L24 24v20l8 12 8-12V24L32 4z" fill="url(#rocketGrad)"/><path d="M24 32l-8 16 8-4v-12z" fill="#f97316"/><path d="M40 32l8 16-8-4v-12z" fill="#f97316"/><circle cx="32" cy="24" r="4" fill="#fff"/><path d="M28 44l4 16 4-16" fill="#fbbf24"/></svg>`,
             'ff-star': `<svg viewBox="0 0 64 64"><defs><linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f97316"/></linearGradient></defs><path d="M32 4l7 20h21l-17 12 7 20-18-13-18 13 7-20L4 24h21z" fill="url(#starGrad)"/></svg>`,
             'ff-heart': `<svg viewBox="0 0 64 64"><defs><linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ec4899"/><stop offset="100%" style="stop-color:#ef4444"/></linearGradient></defs><path d="M32 56S8 40 8 22c0-8 6-14 14-14 5 0 8 2 10 6 2-4 5-6 10-6 8 0 14 6 14 14 0 18-24 34-24 34z" fill="url(#heartGrad)"/></svg>`,
             'ff-trophy': `<svg viewBox="0 0 64 64"><defs><linearGradient id="trophyGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f59e0b"/></linearGradient></defs><path d="M16 8h32v8c0 12-8 20-16 24-8-4-16-12-16-24V8z" fill="url(#trophyGrad)"/><rect x="24" y="40" width="16" height="8" fill="#d97706"/><rect x="20" y="48" width="24" height="8" rx="2" fill="#92400e"/><path d="M8 8h8v8c0 4-4 8-8 8V8z" fill="#fbbf24"/><path d="M48 8h8v16c-4 0-8-4-8-8V8z" fill="#fbbf24"/><circle cx="32" cy="20" r="6" fill="#fff" opacity="0.3"/></svg>`,
             'ff-lightning': `<svg viewBox="0 0 64 64"><defs><linearGradient id="lightGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f97316"/></linearGradient></defs><path d="M36 4L16 32h12l-4 28 24-36H36l4-20z" fill="url(#lightGrad)"/></svg>`,
-            'ff-target': `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="#ef4444" stroke-width="4"/><circle cx="32" cy="32" r="20" fill="none" stroke="#f97316" stroke-width="4"/><circle cx="32" cy="32" r="12" fill="none" stroke="#fbbf24" stroke-width="4"/><circle cx="32" cy="32" r="4" fill="#6366f1"/></svg>`,
+            'ff-target': `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="#ef4444" stroke-width="4"/><circle cx="32" cy="32" r="20" fill="none" stroke="#f97316" stroke-width="4"/><circle cx="32" cy="32" r="12" fill="none" stroke="#fbbf24" stroke-width="4"/><circle cx="32" cy="32" r="4" fill="#10b981"/></svg>`,
             'ff-brain': `<svg viewBox="0 0 64 64"><defs><linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ec4899"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M32 56c-12 0-20-8-20-20 0-8 4-14 10-18-2-4-2-10 2-14 4-4 10-4 14 0 4-4 10-4 14 0 4 4 4 10 2 14 6 4 10 10 10 18 0 12-8 20-20 20h-12z" fill="url(#brainGrad)"/><path d="M28 20c0 8 4 16 4 24M36 20c0 8-4 16-4 24" stroke="#fff" stroke-width="2" fill="none" opacity="0.5"/></svg>`,
             'ff-coffee': `<svg viewBox="0 0 64 64"><defs><linearGradient id="coffeeGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#78350f"/><stop offset="100%" style="stop-color:#451a03"/></linearGradient></defs><rect x="12" y="20" width="32" height="36" rx="4" fill="url(#coffeeGrad)"/><path d="M44 28h8c4 0 8 4 8 8s-4 8-8 8h-8" fill="none" stroke="#78350f" stroke-width="4"/><path d="M16 12c2-4 6-4 8 0M24 8c2-4 6-4 8 0M32 12c2-4 6-4 8 0" stroke="#9ca3af" stroke-width="2" fill="none"/></svg>`,
-            'ff-moon': `<svg viewBox="0 0 64 64"><defs><linearGradient id="moonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8b5cf6"/><stop offset="100%" style="stop-color:#6366f1"/></linearGradient></defs><path d="M40 8c-16 4-24 20-20 36s20 24 36 20c-4 4-12 8-20 8-16 0-28-12-28-28S20 8 36 8c2 0 3 0 4 0z" fill="url(#moonGrad)"/><circle cx="44" cy="20" r="2" fill="#fbbf24"/><circle cx="52" cy="32" r="1.5" fill="#fbbf24"/><circle cx="48" cy="44" r="1" fill="#fbbf24"/></svg>`,
-            'ff-timer': `<svg viewBox="0 0 64 64"><defs><linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#0ea5e9"/></linearGradient></defs><circle cx="32" cy="36" r="24" fill="url(#timerGrad)"/><rect x="28" y="4" width="8" height="8" rx="2" fill="#6366f1"/><line x1="32" y1="36" x2="32" y2="20" stroke="#fff" stroke-width="3" stroke-linecap="round"/><line x1="32" y1="36" x2="44" y2="36" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="36" r="3" fill="#fff"/></svg>`,
+            'ff-moon': `<svg viewBox="0 0 64 64"><defs><linearGradient id="moonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><path d="M40 8c-16 4-24 20-20 36s20 24 36 20c-4 4-12 8-20 8-16 0-28-12-28-28S20 8 36 8c2 0 3 0 4 0z" fill="url(#moonGrad)"/><circle cx="44" cy="20" r="2" fill="#fbbf24"/><circle cx="52" cy="32" r="1.5" fill="#fbbf24"/><circle cx="48" cy="44" r="1" fill="#fbbf24"/></svg>`,
+            'ff-timer': `<svg viewBox="0 0 64 64"><defs><linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><circle cx="32" cy="36" r="24" fill="url(#timerGrad)"/><rect x="28" y="4" width="8" height="8" rx="2" fill="#10b981"/><line x1="32" y1="36" x2="32" y2="20" stroke="#fff" stroke-width="3" stroke-linecap="round"/><line x1="32" y1="36" x2="44" y2="36" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="36" r="3" fill="#fff"/></svg>`,
             'ff-check': `<svg viewBox="0 0 64 64"><defs><linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#059669"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="url(#checkGrad)"/><path d="M20 32l8 8 16-16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-            'ff-thumbsup': `<svg viewBox="0 0 64 64"><defs><linearGradient id="thumbGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M20 28h-8c-2 0-4 2-4 4v24c0 2 2 4 4 4h8V28z" fill="#4f46e5"/><path d="M20 28l8-16c2-4 8-4 8 2v10h16c4 0 6 4 4 8l-6 20c-1 3-4 8-8 8H20V28z" fill="url(#thumbGrad)"/></svg>`,
+            'ff-thumbsup': `<svg viewBox="0 0 64 64"><defs><linearGradient id="thumbGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><path d="M20 28h-8c-2 0-4 2-4 4v24c0 2 2 4 4 4h8V28z" fill="#059669"/><path d="M20 28l8-16c2-4 8-4 8 2v10h16c4 0 6 4 4 8l-6 20c-1 3-4 8-8 8H20V28z" fill="url(#thumbGrad)"/></svg>`,
             'ff-party': `<svg viewBox="0 0 64 64"><defs><linearGradient id="partyGrad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f97316"/><stop offset="50%" style="stop-color:#ec4899"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M8 56L24 8l8 8-16 48-8-8z" fill="url(#partyGrad)"/><circle cx="44" cy="12" r="4" fill="#fbbf24"/><circle cx="52" cy="24" r="3" fill="#ec4899"/><circle cx="36" cy="20" r="3" fill="#10b981"/><rect x="48" y="36" width="6" height="6" fill="#6366f1" transform="rotate(45 51 39)"/><circle cx="40" cy="44" r="2" fill="#f97316"/></svg>`,
-            'ff-gem': `<svg viewBox="0 0 64 64"><defs><linearGradient id="gemGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0ea5e9"/><stop offset="50%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M32 4L8 24l24 36 24-36L32 4z" fill="url(#gemGrad)"/><path d="M32 4L20 24h24L32 4z" fill="#fff" opacity="0.3"/><path d="M20 24L32 60l12-36H20z" fill="#fff" opacity="0.1"/></svg>`,
+            'ff-gem': `<svg viewBox="0 0 64 64"><defs><linearGradient id="gemGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="50%" style="stop-color:#14b8a6"/><stop offset="100%" style="stop-color:#06b6d4"/></linearGradient></defs><path d="M32 4L8 24l24 36 24-36L32 4z" fill="url(#gemGrad)"/><path d="M32 4L20 24h24L32 4z" fill="#fff" opacity="0.3"/><path d="M20 24L32 60l12-36H20z" fill="#fff" opacity="0.1"/></svg>`,
             'ff-crown': `<svg viewBox="0 0 64 64"><defs><linearGradient id="crownGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f59e0b"/></linearGradient></defs><path d="M8 48V24l12 8 12-20 12 20 12-8v24H8z" fill="url(#crownGrad)"/><circle cx="8" cy="24" r="4" fill="#ef4444"/><circle cx="32" cy="12" r="4" fill="#ef4444"/><circle cx="56" cy="24" r="4" fill="#ef4444"/><rect x="8" y="48" width="48" height="8" fill="#d97706"/></svg>`,
             'ff-tree': `<svg viewBox="0 0 64 64"><defs><linearGradient id="treeGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#059669"/></linearGradient></defs><path d="M32 4L12 28h8L8 48h48L44 28h8L32 4z" fill="url(#treeGrad)"/><rect x="28" y="48" width="8" height="12" fill="#78350f"/></svg>`,
             'ff-music': `<svg viewBox="0 0 64 64"><defs><linearGradient id="musicGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ec4899"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><circle cx="16" cy="48" r="10" fill="url(#musicGrad)"/><circle cx="48" cy="40" r="10" fill="url(#musicGrad)"/><rect x="24" y="8" width="4" height="40" fill="url(#musicGrad)"/><rect x="56" y="8" width="4" height="32" fill="url(#musicGrad)"/><path d="M24 8h36v8H24z" fill="url(#musicGrad)"/></svg>`,
             'ff-sun': `<svg viewBox="0 0 64 64"><defs><linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f97316"/></linearGradient></defs><circle cx="32" cy="32" r="14" fill="url(#sunGrad)"/><g stroke="#fbbf24" stroke-width="4" stroke-linecap="round"><line x1="32" y1="4" x2="32" y2="12"/><line x1="32" y1="52" x2="32" y2="60"/><line x1="4" y1="32" x2="12" y2="32"/><line x1="52" y1="32" x2="60" y2="32"/><line x1="12" y1="12" x2="18" y2="18"/><line x1="46" y1="46" x2="52" y2="52"/><line x1="12" y1="52" x2="18" y2="46"/><line x1="46" y1="18" x2="52" y2="12"/></g></svg>`,
             'ff-idea': `<svg viewBox="0 0 64 64"><defs><linearGradient id="ideaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f59e0b"/></linearGradient></defs><path d="M32 4C20 4 12 14 12 24c0 8 4 14 8 18v6c0 2 2 4 4 4h16c2 0 4-2 4-4v-6c4-4 8-10 8-18 0-10-8-20-20-20z" fill="url(#ideaGrad)"/><rect x="24" y="52" width="16" height="4" rx="2" fill="#d97706"/><rect x="24" y="58" width="16" height="4" rx="2" fill="#92400e"/><path d="M28 24v12M36 24v12" stroke="#fff" stroke-width="2" opacity="0.5"/></svg>`,
-            'ff-peace': `<svg viewBox="0 0 64 64"><defs><linearGradient id="peaceGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8b5cf6"/><stop offset="100%" style="stop-color:#6366f1"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="none" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="4" x2="32" y2="60" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="32" x2="12" y2="52" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="32" x2="52" y2="52" stroke="url(#peaceGrad)" stroke-width="4"/></svg>`,
+            'ff-peace': `<svg viewBox="0 0 64 64"><defs><linearGradient id="peaceGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="none" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="4" x2="32" y2="60" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="32" x2="12" y2="52" stroke="url(#peaceGrad)" stroke-width="4"/><line x1="32" y1="32" x2="52" y2="52" stroke="url(#peaceGrad)" stroke-width="4"/></svg>`,
             'ff-wave': `<svg viewBox="0 0 64 64"><defs><linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fcd34d"/><stop offset="100%" style="stop-color:#f59e0b"/></linearGradient></defs><path d="M12 32c0-12 8-24 20-24 8 0 12 8 12 16 0 6-4 12-8 12s-6-4-6-8c0-2 2-4 4-4" fill="url(#waveGrad)"/><circle cx="20" cy="48" r="4" fill="#f59e0b"/><circle cx="32" cy="52" r="3" fill="#f59e0b"/><circle cx="44" cy="48" r="4" fill="#f59e0b"/><path d="M8 56c4-4 8-4 12 0s8 4 12 0 8-4 12 0 8 4 12 0" stroke="#f59e0b" stroke-width="3" fill="none"/></svg>`,
-            'ff-sparkle': `<svg viewBox="0 0 64 64"><defs><linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="50%" style="stop-color:#f472b6"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient></defs><path d="M32 4l4 12 12-4-4 12 12 4-12 4 4 12-12-4-4 12-4-12-12 4 4-12-12-4 12-4-4-12 12 4z" fill="url(#sparkGrad)"/></svg>`,
+            'ff-sparkle': `<svg viewBox="0 0 64 64"><defs><linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="50%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#14b8a6"/></linearGradient></defs><path d="M32 4l4 12 12-4-4 12 12 4-12 4 4 12-12-4-4 12-4-12-12 4 4-12-12-4 12-4-4-12 12 4z" fill="url(#sparkGrad)"/></svg>`,
         };
         
         // Популярные стикеры (кастомные + эмодзи)
@@ -11214,8 +11302,22 @@
             <button class="player-btn" onclick="prevTrack()" title="Предыдущий">
                 <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z"/></svg>
             </button>
+            <button class="player-btn-small" onclick="skipBackward()" title="Назад на 5 секунд">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.5 12C2.5 7.5 6 4 10.5 4c3.5 0 6.5 2.2 7.8 5.3"/>
+                    <path d="M2 9l.5 3 3-.5"/>
+                    <text x="14" y="16" font-size="8" font-weight="bold" fill="currentColor" stroke="none" text-anchor="middle">5</text>
+                </svg>
+            </button>
             <button class="player-btn player-btn-main" id="playPauseBtn" onclick="togglePlay()" title="Воспроизвести">
                 <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="player-btn-small" onclick="skipForward()" title="Вперед на 5 секунд">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 12c0 4.5-3.5 8-8 8-3.5 0-6.5-2.2-7.8-5.3"/>
+                    <path d="M22 15l-.5-3-3 .5"/>
+                    <text x="10" y="16" font-size="8" font-weight="bold" fill="currentColor" stroke="none" text-anchor="middle">5</text>
+                </svg>
             </button>
             <button class="player-btn" onclick="nextTrack()" title="Следующий">
                 <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>

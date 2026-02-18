@@ -1,0 +1,349 @@
+/* Изумрудная тема для FocusFlow */
+
+/* Глобальные переменные */
+:root {
+    --primary: #10b981 !important;
+    --primary-light: #34d399 !important;
+    --primary-dark: #059669 !important;
+    --secondary: #14b8a6 !important;
+    --accent: #06b6d4 !important;
+    --gradient: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+[data-theme="dark"] {
+    --bg-main: #000000 !important;
+    --bg-card: rgba(10, 20, 15, 0.8) !important;
+    --bg-sidebar: rgba(5, 15, 10, 0.95) !important;
+    --bg-input: rgba(5, 15, 10, 0.6) !important;
+    --text-primary: #e0f2e9 !important;
+    --text-secondary: #6b8f7a !important;
+    --border-color: rgba(16, 185, 129, 0.2) !important;
+    --border-hover: rgba(16, 185, 129, 0.5) !important;
+    --glow-color: rgba(16, 185, 129, 0.3) !important;
+    --star-color: #10b981 !important;
+    --icon-color: #34d399 !important;
+}
+
+/* Звёзды */
+.star {
+    background: rgba(16, 185, 129, 0.9) !important;
+}
+
+/* Кнопки с анимацией цвета текста */
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    color: #000000 !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    color: #ffffff !important;
+    box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6) !important;
+}
+
+.btn-outline {
+    border-color: #10b981 !important;
+    color: #10b981 !important;
+}
+
+.btn-outline:hover {
+    border-color: #34d399 !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #34d399 !important;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar-track {
+    background: rgba(16, 185, 129, 0.1) !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.4) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.6) !important;
+}
+
+* {
+    scrollbar-color: rgba(16, 185, 129, 0.4) rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Навигация */
+.nav-item.active {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: #34d399 !important;
+}
+
+/* Никнейм пользователя */
+.user-username {
+    color: #ffffff !important;
+}
+
+/* Небулы */
+.nebula-1 {
+    background: #10b981 !important;
+}
+
+.nebula-2 {
+    background: #14b8a6 !important;
+}
+
+.nebula-3 {
+    background: #06b6d4 !important;
+}
+
+.nebula-4 {
+    background: #10b981 !important;
+}
+
+/* Акценты с изумрудным цветом */
+.subtasks-progress,
+.tree-info,
+.stat-item,
+.ambient-btn.active,
+.preset-btn.active,
+.ambient-select-btn.active,
+.mood-emoji-btn.selected,
+.template-icon-btn.selected,
+.cloud-file-select-item.selected,
+.cloud-upload-type.active,
+.chat-item.active,
+.emoji-picker-tab.active,
+.message-date span {
+    background: rgba(16, 185, 129, 0.15) !important;
+}
+
+.subtask-item:hover,
+.add-subtask-btn:hover,
+.player-btn:hover,
+.player-btn-small:hover,
+.player-menu-item:hover,
+.track-item.playing,
+.file-upload.dragover,
+.chat-item:hover,
+.chat-header-btn:hover,
+.chat-attach-btn:hover,
+.emoji-btn:hover,
+.emoji-picker-tab:hover,
+.emoji-item:hover {
+    background: rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Плеер */
+.player-panel {
+    background: rgba(5, 15, 10, 0.85) !important;
+    border-top: 1px solid rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 -4px 30px rgba(16, 185, 129, 0.15) !important;
+}
+
+.player-btn {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border: 2px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.player-btn:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+}
+
+.player-btn-main {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+.player-btn-main:hover {
+    box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5) !important;
+}
+
+.player-btn-small.active {
+    color: #34d399 !important;
+    background: rgba(16, 185, 129, 0.2) !important;
+}
+
+.player-btn-small:hover {
+    background: rgba(16, 185, 129, 0.1) !important;
+}
+
+.player-panel::before {
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent) !important;
+}
+
+.progress-bar-player {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+/* Чат */
+.chat-send-btn {
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+.chat-send-btn:hover {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Графики */
+.chart-bar {
+    background: rgba(16, 185, 129, 0.3) !important;
+}
+
+.chart-bar.today {
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Иконки статистики */
+.stat-icon {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(20, 184, 166, 0.1) 100%) !important;
+}
+
+.stat-icon svg {
+    stroke: #34d399 !important;
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.4)) !important;
+}
+
+.stat:hover .stat-icon svg {
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6)) !important;
+}
+
+.stat-icon svg .filled {
+    fill: #34d399 !important;
+}
+
+/* Дерево концентрации */
+.tree-level {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.eye-dot {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Загрузка файлов */
+.file-upload-progress-bar {
+    background: rgba(16, 185, 129, 0.1) !important;
+}
+
+.progress-bar-upload {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+#cloudUploadBar {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+/* Модальные окна */
+.modal {
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Карточки */
+.card:hover,
+.focus-task-card:hover {
+    border-color: #10b981 !important;
+}
+
+/* Подсветка активных элементов */
+.subtask-checkbox:hover {
+    border-color: #10b981 !important;
+}
+
+.subtask-checkbox.completed {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    border-color: #10b981 !important;
+}
+
+/* Тень для элементов */
+.stat:hover {
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Градиентный текст */
+.gradient-text {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Логотип */
+.logo-icon {
+    color: #10b981 !important;
+    text-shadow: 0 0 20px #10b981, 0 0 40px #10b981 !important;
+}
+
+/* Ссылки */
+.auth-footer a,
+.nav-link:hover {
+    color: #10b981 !important;
+}
+
+/* Переключатель темы */
+.theme-toggle:hover {
+    border-color: #10b981 !important;
+}
+
+/* Прогресс-бары */
+.exp-bar-fill {
+    background: linear-gradient(90deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+/* Анимация для карточек плейлистов */
+.playlist-card:hover {
+    border-color: #10b981 !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35), 0 0 0 1px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Статусы задач */
+.status-in_progress {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #34d399 !important;
+}
+
+/* Исходящие сообщения в чате */
+.message-outgoing {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+}
+
+/* Статус прочитанного сообщения */
+.message-status.read {
+    color: #34d399 !important;
+}
+
+/* SVG градиент прогресса */
+#progressGradient stop[offset="0%"] {
+    stop-color: #10b981 !important;
+}
+
+#progressGradient stop[offset="100%"] {
+    stop-color: #14b8a6 !important;
+}
+
+/* Дополнительные акценты */
+.health-reminder-title {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Кнопка Google */
+.btn-google {
+    background: rgba(16, 185, 129, 0.08) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.btn-google:hover {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: #34d399 !important;
+}

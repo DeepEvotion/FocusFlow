@@ -16,6 +16,7 @@ class Config:
     # Google OAuth
     GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
     GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET', '')
+    GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
     
     # Yandex Disk OAuth
     YANDEX_CLIENT_ID = os.getenv('YANDEX_CLIENT_ID', '7cac02993e1f4543add1b5536baa9717')

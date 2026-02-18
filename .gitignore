@@ -19,6 +19,8 @@ backend/instance/
 # Uploads (user files)
 backend/uploads/music/*
 !backend/uploads/music/.gitkeep
+backend/uploads/avatars/*
+!backend/uploads/avatars/.gitkeep
 
 # IDE
 .vscode/

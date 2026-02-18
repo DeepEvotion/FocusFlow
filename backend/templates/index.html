@@ -5,29 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FocusFlow - Сфокусируйся на главном</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/emerald-theme.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --secondary: #0ea5e9;
-            --accent: #8b5cf6;
+            --primary: #10b981;
+            --primary-light: #34d399;
+            --primary-dark: #059669;
+            --secondary: #14b8a6;
+            --accent: #06b6d4;
             --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
         
         [data-theme="dark"] {
-            --bg-main: #050510;
-            --bg-card: rgba(15, 15, 35, 0.8);
-            --bg-card-hover: rgba(25, 25, 55, 0.9);
-            --bg-input: rgba(10, 10, 30, 0.6);
-            --text-primary: #f0f0ff;
-            --text-secondary: #8888aa;
-            --border-color: rgba(99, 102, 241, 0.2);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --glow-color: rgba(99, 102, 241, 0.3);
-            --star-color: #ffffff;
-            --icon-color: #818cf8;
+            --bg-main: #000000;
+            --bg-card: rgba(10, 20, 15, 0.8);
+            --bg-card-hover: rgba(15, 30, 20, 0.9);
+            --bg-input: rgba(5, 15, 10, 0.6);
+            --text-primary: #e0f2e9;
+            --text-secondary: #6b8f7a;
+            --border-color: rgba(16, 185, 129, 0.2);
+            --border-hover: rgba(16, 185, 129, 0.5);
+            --glow-color: rgba(16, 185, 129, 0.3);
+            --star-color: #10b981;
+            --icon-color: #34d399;
         }
         
         [data-theme="light"] {
@@ -79,9 +81,9 @@
             animation: float 20s ease-in-out infinite;
         }
         
-        .nebula-1 { width: 500px; height: 500px; background: var(--primary); top: 10%; left: -10%; }
-        .nebula-2 { width: 400px; height: 400px; background: var(--accent); bottom: 20%; right: -5%; animation-delay: -10s; }
-        .nebula-3 { width: 300px; height: 300px; background: var(--secondary); top: 50%; left: 30%; animation-delay: -5s; }
+        .nebula-1 { width: 500px; height: 500px; background: var(--primary); top: 10%; left: -10%; opacity: 0.15; }
+        .nebula-2 { width: 400px; height: 400px; background: var(--secondary); bottom: 20%; right: -5%; animation-delay: -10s; opacity: 0.12; }
+        .nebula-3 { width: 300px; height: 300px; background: var(--accent); top: 50%; left: 30%; animation-delay: -5s; opacity: 0.1; }
         
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
@@ -191,18 +193,35 @@
             padding: 12px 28px; 
             border-radius: 12px; 
             font-weight: 600; 
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
             border: 2px solid transparent;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
         .btn:hover { transform: translateY(-2px); }
-        .btn-primary { background: var(--gradient); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .btn-primary:hover { box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5); }
-        .btn-outline { background: transparent; border-color: var(--text-secondary); color: var(--text-primary); }
-        .btn-outline:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
+        .btn-primary { 
+            background: var(--gradient); 
+            color: #000000; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-primary:hover { 
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+            color: #ffffff;
+        }
+        .btn-outline { 
+            background: transparent; 
+            border-color: var(--primary); 
+            color: var(--primary);
+        }
+        .btn-outline:hover { 
+            border-color: var(--primary-light); 
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-light);
+        }
         .btn-lg { padding: 16px 36px; font-size: 1.1rem; }
         
         /* Hero секция */
