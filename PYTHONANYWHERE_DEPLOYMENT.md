@@ -32,23 +32,29 @@
 git clone https://github.com/DeepEvotion/FocusFlow.git
 cd FocusFlow
 
-# 2. Создайте виртуальное окружение
-mkvirtualenv --python=/usr/bin/python3.10 focusflow-env
+# 2. Используйте существующее окружение ИЛИ создайте новое
+workon your-existing-env  # Существующее
+# ИЛИ
+mkvirtualenv --python=/usr/bin/python3.10 focusflow-env  # Новое
+
+# 3. Установите зависимости
 pip install -r requirements-pythonanywhere.txt
 
-# 3. Настройте .env
+# 4. Настройте .env
 cd backend
 cp .env.example .env
 nano .env  # Добавьте SECRET_KEY
 
-# 4. Инициализируйте БД
+# 5. Инициализируйте БД
 python3 -c "from app import app, db; app.app_context().push(); db.create_all()"
 
-# 5. Настройте Web App (Manual configuration, Python 3.10)
-# 6. Настройте WSGI файл (замените YOUR_USERNAME)
-# 7. Настройте Static files
-# 8. Reload приложения
+# 6. Настройте Web App (Manual configuration, Python 3.10)
+# 7. Настройте WSGI файл (замените YOUR_USERNAME и YOUR_ENV_NAME)
+# 8. Настройте Static files
+# 9. Reload приложения
 ```
+
+**Важно:** В WSGI файле замените `YOUR_ENV_NAME` на имя вашего окружения!
 
 ---
 
@@ -144,10 +150,47 @@ FocusFlow/
 
 Dashboard → Consoles → Bash
 
-### 4.2 Создайте виртуальное окружение
+### 4.2 Выберите вариант
+
+#### Вариант A: Использовать существующее виртуальное окружение (рекомендуется)
+
+Если у вас уже есть виртуальное окружение на PythonAnywhere:
+
+```bash
+# Активируйте существующее окружение
+workon your-existing-env
+
+# Перейдите в папку проекта
+cd ~/FocusFlow
+
+# Установите зависимости
+pip install -r requirements-pythonanywhere.txt
+
+# Проверьте установку
+pip list
+```
+
+**Преимущества:**
+- ✅ Не нужно создавать новое окружение
+- ✅ Экономия дискового пространства
+- ✅ Быстрее настройка
+
+#### Вариант B: Создать новое виртуальное окружение
+
+Если хотите отдельное окружение для FocusFlow:
 
 ```bash
 # Перейдите в папку проекта
+cd ~/FocusFlow
+
+# Создайте виртуальное окружение
+mkvirtualenv --python=/usr/bin/python3.10 focusflow-env
+
+# Виртуальное окружение автоматически активируется
+# Вы увидите (focusflow-env) в начале строки
+```
+
+### 4.3 Установите зависимости
 cd ~/FocusFlow
 
 # Создайте виртуальное окружение
@@ -271,7 +314,8 @@ if backend_path not in sys.path:
     sys.path.insert(0, backend_path)
 
 # Активируйте виртуальное окружение
-activate_this = '/home/YOUR_USERNAME/.virtualenvs/focusflow-env/bin/activate_this.py'
+# ВАЖНО: Замените YOUR_ENV_NAME на имя вашего окружения!
+activate_this = '/home/YOUR_USERNAME/.virtualenvs/YOUR_ENV_NAME/bin/activate_this.py'
 with open(activate_this) as file_:
     exec(file_.read(), dict(__file__=activate_this))
 
@@ -279,15 +323,32 @@ with open(activate_this) as file_:
 from app import app as application
 ```
 
-5. **Замените `YOUR_USERNAME`** на ваше имя пользователя PythonAnywhere (2 раза!)
+5. **Замените переменные:**
+   - `YOUR_USERNAME` → ваше имя пользователя PythonAnywhere (2 раза)
+   - `YOUR_ENV_NAME` → имя вашего виртуального окружения (например: `focusflow-env` или `your-existing-env`)
+
 6. Нажмите **"Save"** (зеленая кнопка вверху)
+
+**Примеры:**
+- Новое окружение: `/home/myusername/.virtualenvs/focusflow-env/bin/activate_this.py`
+- Существующее: `/home/myusername/.virtualenvs/myproject-env/bin/activate_this.py`
 
 ### 6.4 Настройте виртуальное окружение
 
 1. В разделе **"Virtualenv"** найдите поле **"Enter path to a virtualenv"**
-2. Введите: `/home/YOUR_USERNAME/.virtualenvs/focusflow-env`
+2. Введите путь к вашему окружению:
+   - Новое: `/home/YOUR_USERNAME/.virtualenvs/focusflow-env`
+   - Существующее: `/home/YOUR_USERNAME/.virtualenvs/your-existing-env`
 3. Замените `YOUR_USERNAME` на ваше имя
 4. Нажмите галочку ✓
+
+**Как узнать имя существующего окружения:**
+```bash
+# В Bash консоли выполните:
+lsvirtualenv
+# Или посмотрите список:
+ls ~/.virtualenvs/
+```
 
 ---
 
