@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/Flask-2.0+-green?style=for-the-badge&logo=flask&logoColor=white" alt="Flask"/>
   <img src="https://img.shields.io/badge/SQLite-3-blue?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
+  <img src="https://img.shields.io/badge/Deploy-PythonAnywhere-1D9FD7?style=for-the-badge&logo=python&logoColor=white" alt="PythonAnywhere"/>
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"/>
 </p>
 
@@ -111,6 +112,43 @@ python app.py
 ```
 http://127.0.0.1:5000
 ```
+
+---
+
+## 🌍 Развертывание на PythonAnywhere
+
+FocusFlow можно бесплатно развернуть на [PythonAnywhere](https://www.pythonanywhere.com/)!
+
+### Быстрый старт
+
+```bash
+# 1. Клонируйте репозиторий
+git clone https://github.com/DeepEvotion/FocusFlow.git
+cd FocusFlow
+
+# 2. Создайте виртуальное окружение
+mkvirtualenv --python=/usr/bin/python3.10 focusflow-env
+pip install -r requirements-pythonanywhere.txt
+
+# 3. Настройте .env
+cd backend
+cp .env.example .env
+nano .env  # Добавьте SECRET_KEY
+
+# 4. Инициализируйте базу данных
+python3 -c "from app import app, db; app.app_context().push(); db.create_all()"
+```
+
+### 📖 Полная инструкция
+
+- **Быстрый старт**: [QUICKSTART_PYTHONANYWHERE.md](QUICKSTART_PYTHONANYWHERE.md)
+- **Подробное руководство**: [PYTHONANYWHERE_DEPLOYMENT.md](PYTHONANYWHERE_DEPLOYMENT.md)
+
+Включает:
+- Пошаговую настройку WSGI
+- Конфигурацию статических файлов
+- Настройку OAuth для production
+- Troubleshooting и решение проблем
 
 ---
 
