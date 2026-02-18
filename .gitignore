@@ -47,6 +47,7 @@ DEPLOYMENT_FAQ.md
 DEPLOYMENT_CHECKLIST.md
 DEPLOYMENT_SUMMARY.md
 QUICKSTART_PYTHONANYWHERE.md
+QUICK_REFERENCE.md
 setup_pythonanywhere.sh
 update_pythonanywhere.sh
 check_deployment.py
