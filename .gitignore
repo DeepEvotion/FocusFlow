@@ -38,3 +38,14 @@ Thumbs.db
 # Temp files
 *.tmp
 *.temp
+
+# Deployment documentation (keep locally only)
+WORK_COMPLETED.md
+API_EXAMPLES.md
+DEPLOYMENT_FAQ.md
+DEPLOYMENT_CHECKLIST.md
+DEPLOYMENT_SUMMARY.md
+QUICKSTART_PYTHONANYWHERE.md
+setup_pythonanywhere.sh
+update_pythonanywhere.sh
+check_deployment.py

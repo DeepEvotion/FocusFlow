@@ -119,41 +119,15 @@ http://127.0.0.1:5000
 
 FocusFlow можно бесплатно развернуть на [PythonAnywhere](https://www.pythonanywhere.com/)!
 
-### 🎯 Три способа развертывания
+### 📖 Инструкция по развертыванию
 
-#### 1️⃣ Автоматический (рекомендуется)
-Используйте скрипт автоматической настройки:
-```bash
-git clone https://github.com/DeepEvotion/FocusFlow.git
-cd FocusFlow
-bash setup_pythonanywhere.sh
-```
+Следуйте подробному руководству: [PYTHONANYWHERE_DEPLOYMENT.md](PYTHONANYWHERE_DEPLOYMENT.md)
 
-#### 2️⃣ Быстрый старт (5 минут)
-Следуйте краткой инструкции: [QUICKSTART_PYTHONANYWHERE.md](QUICKSTART_PYTHONANYWHERE.md)
-
-#### 3️⃣ Подробное руководство (15 минут)
-Полная инструкция с объяснениями: [PYTHONANYWHERE_DEPLOYMENT.md](PYTHONANYWHERE_DEPLOYMENT.md)
-
-### 🛠️ Инструменты для развертывания
-
-- 🔍 **check_deployment.py** - проверка готовности к развертыванию
-  ```bash
-  python3 check_deployment.py
-  ```
-
-- 🚀 **setup_pythonanywhere.sh** - автоматическая настройка
-- 🔄 **update_pythonanywhere.sh** - обновление после изменений
-- ✅ **DEPLOYMENT_CHECKLIST.md** - чеклист для проверки
-- ❓ **DEPLOYMENT_FAQ.md** - часто задаваемые вопросы
-
-### 📖 Документация
-
-- **Быстрый старт**: [QUICKSTART_PYTHONANYWHERE.md](QUICKSTART_PYTHONANYWHERE.md)
-- **Подробное руководство**: [PYTHONANYWHERE_DEPLOYMENT.md](PYTHONANYWHERE_DEPLOYMENT.md)
-- **Чеклист**: [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
-- **FAQ**: [DEPLOYMENT_FAQ.md](DEPLOYMENT_FAQ.md)
-- **Резюме**: [DEPLOYMENT_SUMMARY.md](DEPLOYMENT_SUMMARY.md)
+Включает:
+- Пошаговую настройку WSGI
+- Конфигурацию статических файлов
+- Настройку OAuth для production
+- Troubleshooting и решение проблем
 
 ---
 
