@@ -84,7 +84,7 @@
 
 ```bash
 # Клонируйте репозиторий
-git clone https://github.com/your-username/focusflow.git
+git clone https://github.com/DeepEvotion/FocusFlow.git
 cd focusflow
 
 # Создайте виртуальное окружение
@@ -257,7 +257,7 @@ focusflow/
 
 ## 🐛 Сообщения об ошибках
 
-Нашли баг? Создайте [Issue](https://github.com/your-username/focusflow/issues) с описанием:
+Нашли баг? Создайте [Issue](https://github.com/DeepEvotion/FocusFlow/issues) с описанием:
 
 1. Что произошло
 2. Что ожидалось
@@ -283,8 +283,8 @@ focusflow/
 
 ## 📞 Контакты
 
-- 🐛 Issues: [GitHub Issues](https://github.com/your-username/focusflow/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/your-username/focusflow/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/DeepEvotion/FocusFlow/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/DeepEvotion/FocusFlow/discussions)
 - 📧 Email: support@focusflow.app
 
 ---
