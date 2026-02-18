@@ -1,11 +1,17 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+# Загружаем .env файл
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///focus_app.db?timeout=30')
+    
+    # База данных - используем абсолютный путь для instance
+    instance_path = os.path.join(os.path.dirname(basedir), 'instance')
+    default_db_path = f'sqlite:///{os.path.join(instance_path, "focus_app.db")}'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', default_db_path)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
