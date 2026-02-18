@@ -10,6 +10,7 @@ env/
 # Environment
 .env
 backend/.env
+.env.production
 
 # Database
 *.db
@@ -49,3 +50,6 @@ QUICKSTART_PYTHONANYWHERE.md
 setup_pythonanywhere.sh
 update_pythonanywhere.sh
 check_deployment.py
+
+# Local testing
+test_local.py
